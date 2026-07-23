@@ -1,33 +1,17 @@
 import pygame
-import random 
+import random, sys
+from button import Button
 #import os
-
+from game_rules import *
 #import operator
+
 pygame.init()
 players = {'Player 1': 0,  'Player 2': 0}
 W, H = 1000, 600
 wn = pygame.display.set_mode((W,H))
 
 run = True
-direction = [0, 1]
-angle = [0, 1, 2]
 
-#ball
-green = (0,255,0)
-rad = 15
-b_x, b_y = W/2 - rad, H/2 - rad
-b_vel_x, b_vel_y = 0.6, 0.6
-
-#paddle
-pink = (255, 0, 127)
-pad_w, pad_h = 20, 120
-left_pad_y = right_pad_y = H/2 - pad_h/2
-left_pad_x, right_pad_x = 100 - pad_w/2, W - (100 - pad_w/2)
-left_pad_vel = right_pad_vel = 0
-
-#gadget
-left_gadget = right_gadget = 0
-left_gad_rem = right_gad_rem = 5
 
 while run:
     #players = {'Player 1': 0,  'Player 2': 0}
@@ -130,7 +114,7 @@ while run:
             if left_pad_y <= b_y <= left_pad_y + pad_h:
                 b_x = left_pad_x + pad_w 
                 b_vel_x *= -3.5
-                leftt_gadget = 0
+                left_gadget = 0
                 left_gad_rem -= 1
     elif left_gadget == 2:
         left_pad_y = b_y
@@ -143,7 +127,7 @@ while run:
                 b_y = right_pad_x + pad_w
                 b_vel_x *= -3.5 
                 right_gadget = 0
-                right_gadget -= 1
+                right_gadget_rem -= 1
     elif right_gadget == 2:
         right_pad_y = b_y
         right_gadget = 0 
@@ -174,7 +158,7 @@ while run:
     winning_font = pygame.font.SysFont('comicsansms', 100)
     if players['Player 1'] == 1 or players['Player 2'] == 1:
         wn.fill((0,0,0))
-        winner = font.render(f'{max(players, key = players.get)} WINS!!!!', True, (255,255,255))
+        winner = winning_font.render(f'{max(players, key = players.get)} WINS!!!!', True, (255,255,255))
         wn.blit(winner, (350, 250)) 
-      
+        run = False
     pygame.display.update()
